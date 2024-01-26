@@ -9,19 +9,22 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        // GetComponent< ÄÄÆ÷³ÍÆ® Å¸ÀÔ > (); -> °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+        // GetComponent< ì»´í¬ë„ŒíŠ¸ íƒ€ì… > (); -> ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
         // SpriteRenderer sr = GetComponent<SpriteRenderer>();
         // sr.color = Color.white;
 
         // Transform tr = GetComponent<Transform>();
-        // tr.position = new Vector2(0f, -2.7f); // ÃÊ±â À§Ä¡
-        transform.position = new Vector2(0f, -2.7f); // ÃÊ±â À§Ä¡
+        // tr.position = new Vector2(0f, -2.7f); // ì´ˆê¸° ìœ„ì¹˜
+        transform.position = new Vector2(0f, -2.7f); // ì´ˆê¸° ìœ„ì¹˜
 
-        PlayerMove playerMove = GetComponent<PlayerMove>(); // PlayerMove¿¡¼­ ¼±¾ğÇÑ °Å °¡Á®¿Ã ¼ö ÀÖÀ½
+        PlayerMove playerMove = GetComponent<PlayerMove>(); // PlayerMoveì—ì„œ ì„ ì–¸í•œ ê±° ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŒ
         //Debug.Log(playerMove.Speed);
-        playerMove.Speed = 5f;  // ¼Óµµ¸¦ ¹Ù²ãÁÜ
+        playerMove.Speed = 5f;  // ì†ë„ë¥¼ ë°”ê¿”ì¤Œ
         //Debug.Log(playerMove.Speed);
 
         Debug.Log($"Player Health: {Health}");
+
+        // ì•„ë¬´ë…¸ë˜
+        // ì•„ã…£ã…‡ë‚˜ã…“ã…‡ë¦¬ë‹ˆì•¼ëŸ¬ã…‘
     }
 }

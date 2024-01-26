@@ -15,9 +15,9 @@ public enum EnemyType
 
 public class Enemy : MonoBehaviour
 {
-    // ¸ñÇ¥: ÀûÀ» ¾Æ·¡·Î ÀÌµ¿½ÃÅ°°í ½Í´Ù.
-    // ¼Ó¼º:
-    // - ¼Ó·Â
+    // ëª©í‘œ: ì ì„ ì•„ë˜ë¡œ ì´ë™ì‹œí‚¤ê³  ì‹¶ë‹¤.
+    // ì†ì„±:
+    // - ì†ë ¥
     public float Speed = 3f;
     public int Health = 2;
 
@@ -38,8 +38,8 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {       
-        // Ä³½Ì: ÀÚÁÖ ¾²´Â µ¥ÀÌÅÍ¸¦ ´õ °¡±î¿î Àå¼Ò¿¡ ÀúÀåÇØµÎ°í ÇÊ¿äÇÒ ¶§ °¡Á®´Ù ¾²´Â °Å
-        // ½ÃÀÛÇÒ ¶§ ÇÃ·¹ÀÌ¾î¸¦ Ã£¾Æ¼­ ±â¾ïÇØµĞ´Ù.
+        // ìºì‹±: ìì£¼ ì“°ëŠ” ë°ì´í„°ë¥¼ ë” ê°€ê¹Œìš´ ì¥ì†Œì— ì €ì¥í•´ë‘ê³  í•„ìš”í•  ë•Œ ê°€ì ¸ë‹¤ ì“°ëŠ” ê±°
+        // ì‹œì‘í•  ë•Œ í”Œë ˆì´ì–´ë¥¼ ì°¾ì•„ì„œ ê¸°ì–µí•´ë‘”ë‹¤.
         _target = GameObject.Find("Player");
         MyAnimator = GetComponent<Animator>();
 
@@ -48,27 +48,27 @@ public class Enemy : MonoBehaviour
 
         if (EType == EnemyType.Target)
         {
-            // 1. ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ È®ÀÎÇÏ´Ù.
-            //GameObject target = GameObject.Find("Player"); // ÀÌ¸§À¸·Î Ã£±â
-            //GameObject.FindGameObjectWithTag("Player"); // ÅÂ±×·Î Ã£±â
+            // 1. í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ í™•ì¸í•˜ë‹¤.
+            //GameObject target = GameObject.Find("Player"); // ì´ë¦„ìœ¼ë¡œ ì°¾ê¸°
+            //GameObject.FindGameObjectWithTag("Player"); // íƒœê·¸ë¡œ ì°¾ê¸°
 
             
-            // 2. ÀÌµ¿ÇÒ ¹æÇâÀ» ±¸ÇÑ´Ù. (target - me)
+            // 2. ì´ë™í•  ë°©í–¥ì„ êµ¬í•œë‹¤. (target - me)
             _dir = _target.transform.position - this.transform.position;
             _dir.Normalize();
 
-            // 1. °¢µµ¸¦ ±¸ÇÑ´Ù.
+            // 1. ê°ë„ë¥¼ êµ¬í•œë‹¤.
             // tan@ = y/x     -> @ = y/x * atan
             float radian = Mathf.Atan2(_dir.y, _dir.x);
-            //Debug.Log(radian);   // È£µµ¹ı -> ¶óµğ¾È °ª
-            float degree = radian * Mathf.Rad2Deg;  // degree °ª
+            //Debug.Log(radian);   // í˜¸ë„ë²• -> ë¼ë””ì•ˆ ê°’
+            float degree = radian * Mathf.Rad2Deg;  // degree ê°’
             //Debug.Log(degree);
             
-            // 2. °¢µµ¿¡ ¸Â°Ô È¸ÀüÇÑ´Ù.
+            // 2. ê°ë„ì— ë§ê²Œ íšŒì „í•œë‹¤.
             transform.rotation = Quaternion.Euler (new Vector3(0, 0, degree + 90));
             
 
-            // transform.LookAt(_target.transform); // 3D¿¡¼­´Â LookAt ¸¹ÀÌ »ç¿ëÇÔ, 2D¿¡¼­´Â ¿À·ù
+            // transform.LookAt(_target.transform); // 3Dì—ì„œëŠ” LookAt ë§ì´ ì‚¬ìš©í•¨, 2Dì—ì„œëŠ” ì˜¤ë¥˜
         }
         else if(EType == EnemyType.Horizon)
         {
@@ -96,27 +96,27 @@ public class Enemy : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, degree + 90);
         }
 
-        // ±¸Çö ¼ø¼­
-        // 1. ¹æÇâ ±¸ÇÏ±â
+        // êµ¬í˜„ ìˆœì„œ
+        // 1. ë°©í–¥ êµ¬í•˜ê¸°
         //Vector2 dir = new Vector2(0, -1);
         //Vector2 dir = Vector2.down;
 
-        // 2. ÀÌµ¿ ½ÃÅ²´Ù.
+        // 2. ì´ë™ ì‹œí‚¨ë‹¤.
         transform.position += (Vector3)(_dir * Speed) * Time.deltaTime;
     }
 
-    // ¸ñÇ¥: Ãæµ¹ÇÏ¸é Àû°ú ÇÃ·¹ÀÌ¾î¸¦ »èÁ¦ÇÏ°í ½Í´Ù.
-    // ±¸Çö ¼ø¼­:
-    // 1. ¸¸¾à¿¡ Ãæµ¹ÀÌ ÀÏ¾î³ª¸é
-    // 2. Àû°ú ÇÃ·¹ÀÌ¾î¸¦ »èÁ¦ÇÑ´Ù.
+    // ëª©í‘œ: ì¶©ëŒí•˜ë©´ ì ê³¼ í”Œë ˆì´ì–´ë¥¼ ì‚­ì œí•˜ê³  ì‹¶ë‹¤.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ë§Œì•½ì— ì¶©ëŒì´ ì¼ì–´ë‚˜ë©´
+    // 2. ì ê³¼ í”Œë ˆì´ì–´ë¥¼ ì‚­ì œí•œë‹¤.
 
-    // Ãæµ¹ÀÌ ÀÏ¾î³ª¸é È£ÃâµÇ´Â ÀÌº¥Æ® ÇÔ¼ö
+    // ì¶©ëŒì´ ì¼ì–´ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” ì´ë²¤íŠ¸ í•¨ìˆ˜
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Ãæµ¹À» ½ÃÀÛÇßÀ» ¶§
+        // ì¶©ëŒì„ ì‹œì‘í–ˆì„ ë•Œ
         // Debug.Log("Enter");
 
-        // Ãæµ¹ÇÑ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×¸¦ È®ÀÎ
+        // ì¶©ëŒí•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ë¥¼ í™•ì¸
         // Debug.Log(collision.collider.tag);  // Player or Bullet
 
         if (collision.collider.tag == "Player")
@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour
 
             Debug.Log($"Player Health: {player.Health}");
            
-            Death();    // ³ª Á×ÀÚ(Enemy)
+            Death();    // ë‚˜ ì£½ì(Enemy)
 
             if (player.Health <= 0)
             {
@@ -163,86 +163,65 @@ public class Enemy : MonoBehaviour
 
             if (Health <= 0)
             {              
-                Death();    // ³ª Á×ÀÚ(Enemy)
+                Death();    // ë‚˜ ì£½ì(Enemy)
                 MakeItem();
             }
             else
             {
                  MyAnimator.Play("Hit");
-                 BulletSource.Play();   // ÀûÀÌ ÃÑ¸ÂÀ» ¶§ ¼Ò¸®
+                 BulletSource.Play();   // ì ì´ ì´ë§ì„ ë•Œ ì†Œë¦¬
                 
             }
-            // ³Ê Á×°í(Player)
+            // ë„ˆ ì£½ê³ (Player)
             Destroy(collision.collider.gameObject);
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // Ãæµ¹ ÁßÀÏ ¶§ ¸Å¹ø
+        // ì¶©ëŒ ì¤‘ì¼ ë•Œ ë§¤ë²ˆ
         // Debug.Log("Stay");
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // Ãæµ¹ÀÌ ³¡³µÀ» ¶§
+        // ì¶©ëŒì´ ëë‚¬ì„ ë•Œ
         // Debug.Log("Exit");
     }
 
-    // 1. ¸¸¾à¿¡ ÀûÀ» ÀâÀ¸¸é?
+    // 1. ë§Œì•½ì— ì ì„ ì¡ìœ¼ë©´?
     public void Death()
     {
-        // ³ª Á×ÀÚ(Enemy)
+        // ë‚˜ ì£½ì(Enemy)
         Destroy(this.gameObject);
         GameObject vfx = Instantiate(ExplosionVFXPrefab);
         vfx.transform.position = this.transform.position;
         
-        // ¸ñÇ¥: ½ºÄÚ¾î¸¦ Áõ°¡½ÃÅ°°í ½Í´Ù.
-        // 1. ¾À¿¡¼­ ScoreManager °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ¿Â´Ù.
+        // ëª©í‘œ: ìŠ¤ì½”ì–´ë¥¼ ì¦ê°€ì‹œí‚¤ê³  ì‹¶ë‹¤.
+        // 1. ì”¬ì—ì„œ ScoreManager ê²Œì„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ì˜¨ë‹¤.
         GameObject smGameObject = GameObject.Find("ScoreManager");
-        // 2. ScoreManager °ÔÀÓ ¿ÀºêÁ§Æ®¿¡¼­ ScoreManager ½ºÅ©¸³Æ® ÄÄÆ÷³ÍÆ®¸¦ ¾ò¾î¿Â´Ù.
+        // 2. ScoreManager ê²Œì„ ì˜¤ë¸Œì íŠ¸ì—ì„œ ScoreManager ìŠ¤í¬ë¦½íŠ¸ ì»´í¬ë„ŒíŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
         ScoreManager scoreManager = smGameObject.GetComponent<ScoreManager>();
-        // 3. ÄÄÆ÷³ÍÆ®ÀÇ Score ¼Ó¼ºÀ» Áõ°¡½ÃÅ²´Ù.
-        scoreManager.Score += 1;
-        //Debug.Log(scoreManager.Score);
-
-        // ¸ñÇ¥: ½ºÄÚ¾î¸¦ È­¸é¿¡ Ç¥½ÃÇÑ´Ù.
-        scoreManager.ScoreTextUI.text = $"Á¡¼ö : {scoreManager.Score}";
-
-
-        // ¸ñÇ¥: ÃÖ°í Á¡¼ö¸¦ °»½ÅÇÏ°í UI¿¡ Ç¥½ÃÇÏ°í ½Í´Ù.
-        // 1. ¸¸¾à¿¡ ÇöÀç Á¡¼ö°¡ ÃÖ°í Á¡¼öº¸´Ù Å©´Ù¸é
-        if (scoreManager.Score > scoreManager.BestScore)
-        {
-            // 2. ÃÖ°í Á¡¼ö¸¦ °»½ÅÇÏ°í
-            scoreManager.BestScore = scoreManager.Score;
-
-            // ¸ñÇ¥: ÃÖ°í Á¡¼ö¸¦ ÀúÀå
-            // 'PlayerPrefs' Å¬·¡½º¸¦ »ç¿ë
-            // -> °ªÀ» 'Å°(Key)'¿Í '°ª(Value)' ÇüÅÂ·Î ÀúÀåÇÏ´Â Å¬·¡½ºÀÔ´Ï´Ù.
-            // ÀúÀåÇÒ ¼ö ÀÖ´Â µ¥ÀÌÅÍÅ¸ÀÔ: int, float, string
-            // Å¸ÀÔº°·Î ÀúÀå/·Îµå°¡ °¡´ÉÇÑ Set/Get ¸Ş¼­µå°¡ ÀÖ´Ù.
-            PlayerPrefs.SetInt("BestScore", scoreManager.BestScore);
-
-            // 3. UI¿¡ Ç¥½ÃÇÑ´Ù.
-            scoreManager.BestScoreTextUI.text = $"ÃÖ°í Á¡¼ö : {scoreManager.BestScore}";
-        }     
+        // 3. ì»´í¬ë„ŒíŠ¸ì˜ Score ì†ì„±ì„ ì¦ê°€ì‹œí‚¨ë‹¤.
+        int score = scoreManager.GetScore();
+        scoreManager.SetScore(score + 1);
+        //Debug.Log(scoreManager.GetScore());
     }
 
     public void MakeItem()
     {
-        // ¸ñÇ¥: 50% È®·ü·Î Ã¼·Â ¿Ã·ÁÁÖ´Â ¾ÆÀÌÅÛ, 50% È®·ü·Î ÀÌµ¿¼Óµµ ¿Ã·ÁÁÖ´Â ¾ÆÀÌÅÛ
+        // ëª©í‘œ: 50% í™•ë¥ ë¡œ ì²´ë ¥ ì˜¬ë ¤ì£¼ëŠ” ì•„ì´í…œ, 50% í™•ë¥ ë¡œ ì´ë™ì†ë„ ì˜¬ë ¤ì£¼ëŠ” ì•„ì´í…œ
         //Item item = collision.collider.GetComponent<Item>();
         GameObject item = null;
         if (Random.Range(0, 2) == 0)
         {
-            // Ã¼·Â ¿Ã·ÁÁÖ´Â ¾ÆÀÌÅÛ »ı¼º
+            // ì²´ë ¥ ì˜¬ë ¤ì£¼ëŠ” ì•„ì´í…œ ìƒì„±
             item = Instantiate(HealthItemPrefab);
         }
         else
         {
-            // ÀÌµ¿¼Óµµ ¿Ã·ÁÁÖ´Â ¾ÆÀÌÅÛ »ı¼º
+            // ì´ë™ì†ë„ ì˜¬ë ¤ì£¼ëŠ” ì•„ì´í…œ ìƒì„±
             item = Instantiate(SpeedItemPrefab);
         }
-        // À§Ä¡¸¦ ³ª(Enemy)ÀÇ À§Ä¡·Î ¼öÁ¤
+        // ìœ„ì¹˜ë¥¼ ë‚˜(Enemy)ì˜ ìœ„ì¹˜ë¡œ ìˆ˜ì •
         item.transform.position = this.transform.position;
     }
 }

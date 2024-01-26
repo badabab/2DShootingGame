@@ -1,31 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// ¿ªÇÒ: Á¡¼ö¸¦ °ü¸®ÇÏ´Â Á¡¼ö °ü¸®ÀÚ
+// ì—­í• : ì ìˆ˜ë¥¼ ê´€ë¦¬í•˜ëŠ” ì ìˆ˜ ê´€ë¦¬ì
 public class ScoreManager : MonoBehaviour
 {
-    // ¸ñÇ¥: ÀûÀ» ÀâÀ» ¶§¸¶´Ù Á¡¼ö¸¦ ¿Ã¸®°í, ÇöÀç Á¡¼ö¸¦ UI¿¡ Ç¥½ÃÇÏ°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º
-    // - ÇöÀç Á¡¼ö¸¦ Ç¥½ÃÇÒ UI
+    // ëª©í‘œ: ì ì„ ì¡ì„ ë•Œë§ˆë‹¤ ì ìˆ˜ë¥¼ ì˜¬ë¦¬ê³ , í˜„ì¬ ì ìˆ˜ë¥¼ UIì— í‘œì‹œí•˜ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±
+    // - í˜„ì¬ ì ìˆ˜ë¥¼ í‘œì‹œí•  UI
     public Text ScoreTextUI;
-    // - ÇöÀç Á¡¼ö¸¦ ±â¾ïÇÒ º¯¼ö
-    public int Score = 0;
+    // - í˜„ì¬ ì ìˆ˜ë¥¼ ê¸°ì–µí•  ë³€ìˆ˜
+    private int _score = 0;
 
-    // ÃÖ°í Á¡¼ö °ü·Ã ¼Ó¼º
+    // ìµœê³  ì ìˆ˜ ê´€ë ¨ ì†ì„±
     public Text BestScoreTextUI;
     public int BestScore = 0;
 
 
-    // ¸ñÇ¥: °ÔÀÓÀ» ½ÃÀÛÇÒ ¶§ ÃÖ°í Á¡¼ö¸¦ ºÒ·¯¿À°í, UI¿¡ Ç¥½ÃÇÏ°í ½Í´Ù.
-    // ±¸Çö ¼ø¼­:
-    // 1. °ÔÀÓÀ» ½ÃÀÛÇÒ ¶§
+    // ëª©í‘œ: ê²Œì„ì„ ì‹œì‘í•  ë•Œ ìµœê³  ì ìˆ˜ë¥¼ ë¶ˆëŸ¬ì˜¤ê³ , UIì— í‘œì‹œí•˜ê³  ì‹¶ë‹¤.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ê²Œì„ì„ ì‹œì‘í•  ë•Œ
     private void Start()
     {
-        // 2. ÃÖ°í Á¡¼ö¸¦ ºÒ·¯¿Â´Ù.
+        // 2. ìµœê³  ì ìˆ˜ë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤.
         BestScore = PlayerPrefs.GetInt("BestScore", 0); // default value = 0
-        // 3. UI¿¡ Ç¥½ÃÇÑ´Ù.
-        BestScoreTextUI.text = $"ÃÖ°í Á¡¼ö : {BestScore}";
+        // 3. UIì— í‘œì‹œí•œë‹¤.
+        BestScoreTextUI.text = $"ìµœê³  ì ìˆ˜ : {BestScore}";
+    }
+
+    // ëª©í‘œ: _score ì†ì„±ì— ëŒ€í•œ ìº¡ìŠí™” (get/set)
+    public int GetScore()
+    {
+        return _score;
+    }
+
+    public void SetScore(int score)
+    {
+        // ìœ íš¨ì„± ê²€ì‚¬
+        if (score < 0)
+        {
+            return;
+        }
+        _score = score;
+
+        // ëª©í‘œ: ìŠ¤ì½”ì–´ë¥¼ í™”ë©´ì— í‘œì‹œí•œë‹¤.
+        ScoreTextUI.text = $"ì ìˆ˜ : {_score}";
+
+        // ëª©í‘œ: ìµœê³  ì ìˆ˜ë¥¼ ê°±ì‹ í•˜ê³  UIì— í‘œì‹œí•˜ê³  ì‹¶ë‹¤.
+        // 1. ë§Œì•½ì— í˜„ì¬ ì ìˆ˜ê°€ ìµœê³  ì ìˆ˜ë³´ë‹¤ í¬ë‹¤ë©´
+        if (_score > BestScore)
+        {
+            // 2. ìµœê³  ì ìˆ˜ë¥¼ ê°±ì‹ í•˜ê³ 
+            BestScore = _score;
+
+            // ëª©í‘œ: ìµœê³  ì ìˆ˜ë¥¼ ì €ì¥
+            // 'PlayerPrefs' í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
+            // -> ê°’ì„ 'í‚¤(Key)'ì™€ 'ê°’(Value)' í˜•íƒœë¡œ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
+            // ì €ì¥í•  ìˆ˜ ìˆëŠ” ë°ì´í„°íƒ€ì…: int, float, string
+            // íƒ€ì…ë³„ë¡œ ì €ì¥/ë¡œë“œê°€ ê°€ëŠ¥í•œ Set/Get ë©”ì„œë“œê°€ ìˆë‹¤.
+            PlayerPrefs.SetInt("BestScore", BestScore);
+
+            // 3. UIì— í‘œì‹œí•œë‹¤.
+            BestScoreTextUI.text = $"ìµœê³  ì ìˆ˜ : {BestScore}";
+        }
     }
 }
