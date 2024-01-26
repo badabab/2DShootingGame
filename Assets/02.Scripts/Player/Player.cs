@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int Health = 3;
+    private int _health = 3;
 
     private void Start()
     {
@@ -19,12 +19,17 @@ public class Player : MonoBehaviour
 
         PlayerMove playerMove = GetComponent<PlayerMove>(); // PlayerMove에서 선언한 거 가져올 수 있음
         //Debug.Log(playerMove.Speed);
-        playerMove.Speed = 5f;  // 속도를 바꿔줌
+        playerMove.SetSpeed(5f);  // 속도를 바꿔줌
         //Debug.Log(playerMove.Speed);
 
-        Debug.Log($"Player Health: {Health}");
-
-        // 아무노래
-        // 아ㅣㅇ나ㅓㅇ리니야러ㅑ
+        Debug.Log($"Player Health: {_health}");
+    }
+    public int GetHealth()
+    {
+        return _health;
+    }
+    public void SetHealth(int health)
+    {
+        _health = health;
     }
 }

@@ -122,13 +122,14 @@ public class Enemy : MonoBehaviour
         if (collision.collider.tag == "Player")
         {
             Player player = collision.collider.GetComponent<Player>();
-            player.Health -= 1;
+            int health = player.GetHealth();
+            player.SetHealth(health - 1);
 
-            Debug.Log($"Player Health: {player.Health}");
+            Debug.Log($"Player Health: {player.GetHealth()}");
            
             Death();    // 나 죽자(Enemy)
 
-            if (player.Health <= 0)
+            if (player.GetHealth() <= 0)
             {
                 Destroy(collision.collider.gameObject);
             }
@@ -202,7 +203,8 @@ public class Enemy : MonoBehaviour
         ScoreManager scoreManager = smGameObject.GetComponent<ScoreManager>();
         // 3. 컴포넌트의 Score 속성을 증가시킨다.
         int score = scoreManager.GetScore();
-        scoreManager.SetScore(score + 1);
+        scoreManager.AddScore();
+        //scoreManager.SetScore(score + 1);
         //Debug.Log(scoreManager.GetScore());
     }
 

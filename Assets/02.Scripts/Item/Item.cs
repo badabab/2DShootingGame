@@ -28,19 +28,20 @@ public class Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        //Debug.Log("Æ®¸®°Å ½ÃÀÛ!");
+        //Debug.Log("íŠ¸ë¦¬ê±° ì‹œìž‘!");
     }
     private void OnTriggerStay2D(Collider2D otherCollider)
     {
-        //Debug.Log("Æ®¸®°Å Áß!");
+        //Debug.Log("íŠ¸ë¦¬ê±° ì¤‘!");
         EatTimer += Time.deltaTime;
         if (EatTimer >= EatTime)
         {
             if (IType == ItemType.Health)
             {
                 Player player = otherCollider.GetComponent<Player>();
-                player.Health += 1;
-                Debug.Log($"Player Health: {player.Health}");
+                int health = player.GetHealth();
+                player.SetHealth(health + 1) ;
+                Debug.Log($"Player Health: {player.GetHealth()}");
 
                 GameObject vfx = Instantiate(HealthItemVFXPrefab);
                 vfx.transform.position = this.transform.position;
@@ -48,8 +49,9 @@ public class Item : MonoBehaviour
             else if (IType == ItemType.Speed)
             {
                 PlayerMove player = otherCollider.GetComponent<PlayerMove>();
-                player.Speed += 1;
-                Debug.Log($"Player Speed: {player.Speed}");
+                float speed = player.GetSpeed();
+                player.SetSpeed(speed + 1);
+                Debug.Log($"Player Speed: {player.GetSpeed()}");
 
                 GameObject vfx = Instantiate(SpeedItemVFXPrefab);
                 vfx.transform.position = this.transform.position;
@@ -83,7 +85,7 @@ public class Item : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D otherCollider)
     {
-        //Debug.Log("Æ®¸®°Å Á¾·á!");
+        //Debug.Log("íŠ¸ë¦¬ê±° ì¢…ë£Œ!");
         EatTimer = 0f;
     }
 }
