@@ -209,7 +209,7 @@ public class Enemy : MonoBehaviour
         */
 
         // 싱글톤 객체 참조로 변경
-        ScoreManager.instance.AddScore();
+        ScoreManager.instance.Score += 1;
     }
 
     public void MakeItem()
