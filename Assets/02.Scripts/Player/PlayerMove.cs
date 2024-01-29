@@ -155,8 +155,14 @@ public class PlayerMove : MonoBehaviour
     {
         return _speed;
     }
+    
     public void SetSpeed(float speed)
     {
         _speed = speed;
+    }
+    
+    public void AddSpeed(float speedAmount)
+    {
+        _speed += speedAmount;
     }
 }

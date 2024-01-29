@@ -1740,7 +1740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1225868666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2285,7 +2285,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreTextUI: {fileID: 683913086}
-  Score: 0
   BestScoreTextUI: {fileID: 281688847}
   BestScore: 0
 --- !u!4 &2129652799
@@ -2451,7 +2450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 066bc7c7642f48643ab429ff6cc19d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 3
   MyAnimator: {fileID: 0}
   HitSource: {fileID: 1341743831}
 --- !u!4 &2570251728037199585
@@ -2904,7 +2902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d335b4c6cdca1aa43ba30be55bb7ca41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 3
 --- !u!82 &9006636492317442891
 AudioSource:
   m_ObjectHideFlags: 0

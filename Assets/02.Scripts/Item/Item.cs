@@ -39,8 +39,7 @@ public class Item : MonoBehaviour
             if (IType == ItemType.Health)
             {
                 Player player = otherCollider.GetComponent<Player>();
-                int health = player.GetHealth();
-                player.SetHealth(health + 1) ;
+                player.AddHealth(1);
                 Debug.Log($"Player Health: {player.GetHealth()}");
 
                 GameObject vfx = Instantiate(HealthItemVFXPrefab);
@@ -49,8 +48,7 @@ public class Item : MonoBehaviour
             else if (IType == ItemType.Speed)
             {
                 PlayerMove player = otherCollider.GetComponent<PlayerMove>();
-                float speed = player.GetSpeed();
-                player.SetSpeed(speed + 1);
+                player.AddSpeed(1);
                 Debug.Log($"Player Speed: {player.GetSpeed()}");
 
                 GameObject vfx = Instantiate(SpeedItemVFXPrefab);

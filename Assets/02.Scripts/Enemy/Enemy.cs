@@ -122,17 +122,16 @@ public class Enemy : MonoBehaviour
         if (collision.collider.tag == "Player")
         {
             Player player = collision.collider.GetComponent<Player>();
-            int health = player.GetHealth();
-            player.SetHealth(health - 1);
-
+            player.DecreaseHealth(1);
             Debug.Log($"Player Health: {player.GetHealth()}");
            
             Death();    // 나 죽자(Enemy)
-
+            /*
             if (player.GetHealth() <= 0)
             {
                 Destroy(collision.collider.gameObject);
             }
+            */
         }
         else if (collision.collider.tag == "Bullet")
         {
@@ -195,7 +194,8 @@ public class Enemy : MonoBehaviour
         Destroy(this.gameObject);
         GameObject vfx = Instantiate(ExplosionVFXPrefab);
         vfx.transform.position = this.transform.position;
-        
+
+        /*
         // 목표: 스코어를 증가시키고 싶다.
         // 1. 씬에서 ScoreManager 게임 오브젝트를 찾아온다.
         GameObject smGameObject = GameObject.Find("ScoreManager");
@@ -206,6 +206,10 @@ public class Enemy : MonoBehaviour
         scoreManager.AddScore();
         //scoreManager.SetScore(score + 1);
         //Debug.Log(scoreManager.GetScore());
+        */
+
+        // 싱글톤 객체 참조로 변경
+        ScoreManager.instance.AddScore();
     }
 
     public void MakeItem()

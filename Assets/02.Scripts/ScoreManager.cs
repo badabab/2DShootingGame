@@ -20,6 +20,32 @@ public class ScoreManager : MonoBehaviour
     public int BestScore = 0;
 
 
+    // ScoreManager가 점수를 관리하는 유일한 매니저(관리자)이므로 싱글톤을 적용하는 게 편하다.
+    public static ScoreManager instance; // ScoreManager 객체
+
+    private void Awake()
+    {
+        Debug.Log("ScoreManager 객체의 Awake 호출!");
+        // 싱글톤 패턴: 오직 한 개의 클래스 인스턴스를 갖도록 보장하고,
+        //              전역적인 접근점을 제공한다. (아무데서나 쉽게 이 하나의 객체에 접근 가능)
+        // 사용 이유:
+        // 개임 개발에서 매니저 / 관리자 클래스에 싱글톤 패턴을 사용하는 것은 일반적인 관행
+        // - 전역 접근, 코드 단순화 (해당 관리자를 찾기 위한 복잡한 로직이 필요 없다.)
+        // - 중복 생성 방지(메모리 및 리소스 관리 능력 Up)
+
+        if (instance == null)
+        {
+            Debug.Log("생성된 것");
+            instance = this;
+        }
+        else
+        {
+            Debug.Log("이미 있는 것");
+            Destroy(gameObject);
+        }
+    }
+
+
     // 목표: 게임을 시작할 때 최고 점수를 불러오고, UI에 표시하고 싶다.
     // 구현 순서:
     // 1. 게임을 시작할 때

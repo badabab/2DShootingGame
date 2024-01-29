@@ -28,8 +28,27 @@ public class Player : MonoBehaviour
     {
         return _health;
     }
+    /*
     public void SetHealth(int health)
     {
         _health = health;
+    }
+    */
+    public void AddHealth(int healthAmount)
+    {
+        _health += healthAmount;
+    }
+    public void DecreaseHealth(int healthAmount)
+    {
+        if(_health < 0)
+        {
+            return;
+        }
+        _health -= healthAmount;
+
+        if (_health <= 0 ) 
+        {
+            Destroy(gameObject);
+        }
     }
 }
