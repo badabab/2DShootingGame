@@ -17,12 +17,14 @@ public class PlayerFire : MonoBehaviour
     [Header("총알 프리팹")] // 링크, 할당
     public GameObject BulletPrefab; // 총알 프리팹
     [Header("총구 들")]
-    public GameObject[] Muzzles; // 총구 들
+    // public GameObject[] Muzzles; // 총구 들
+    public List<GameObject> MuzzlesList = new List<GameObject>();
 
     [Header("서브총알 프리팹")] // 링크, 할당
     public GameObject SubBulletPrefab; // 총알 프리팹
     [Header("서브총구 들")]
-    public GameObject[] SubMuzzles; // 총구 들
+    // public GameObject[] SubMuzzles; // 총구 들
+    public List<GameObject> SubMuzzlesList = new List<GameObject>();
 
     [Header("타이머")]
     public float Timer = 10f;
@@ -81,15 +83,15 @@ public class PlayerFire : MonoBehaviour
               Timer = Cool_Time;
 
               // 목표 : 총구 개수 만큼 총알을 만들고, 만든 총알의 위치를 각 총구의 위치로 바꾼다.
-              for (int i = 0; i < Muzzles.Length; i++)
+              for (int i = 0; i < MuzzlesList.Count; i++)
               {
                     // 2. 프리팹으로부터 총알을 만든다.
                     GameObject bullet = Instantiate(BulletPrefab);
                     GameObject subBullet = Instantiate(SubBulletPrefab);
 
                     // 3. 만든 총알의 위치를 총구의 위치로 바꾼다.
-                    bullet.transform.position = Muzzles[i].transform.position;
-                    subBullet.transform.position = SubMuzzles[i].transform.position;
+                    bullet.transform.position = MuzzlesList[i].transform.position;
+                    subBullet.transform.position = SubMuzzlesList[i].transform.position;
               }
         } 
     }
