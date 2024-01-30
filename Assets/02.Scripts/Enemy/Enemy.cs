@@ -172,8 +172,9 @@ public class Enemy : MonoBehaviour
                  BulletSource.Play();   // 적이 총맞을 때 소리
                 
             }
-            // 너 죽고(Player)
-            Destroy(collision.collider.gameObject);
+            // 총알 삭제
+            //Destroy(collision.collider.gameObject);
+            collision.collider.gameObject.SetActive(false);
         }
     }
     private void OnCollisionStay2D(Collision2D collision)

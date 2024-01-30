@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class DestroyZone : MonoBehaviour
 {
-    // ¸ñÇ¥: ´Ù¸¥ ¹°Ã¼¿Í Ãæµ¹ÇÏ¸é Ãæµ¹ÇÑ ¹°Ã¼¸¦ ÆÄ±«(»èÁ¦)ÇØ¹ö¸°´Ù.
-    // ±¸Çö¼ø¼­:
-    // 1. ¸¸¾à¿¡ ´Ù¸¥ ¹°Ã¼¿Í Ãæµ¹ÇÏ¸é
-    // 2. Ãæµ¹ÇÑ ¹°Ã¼¸¦ ÆÄ±«ÇØ¹ö¸°´Ù.
+    // ëª©í‘œ: ë‹¤ë¥¸ ë¬¼ì²´ì™€ ì¶©ëŒí•˜ë©´ ì¶©ëŒí•œ ë¬¼ì²´ë¥¼ íŒŒê´´(ì‚­ì œ)í•´ë²„ë¦°ë‹¤.
+    // êµ¬í˜„ìˆœì„œ:
+    // 1. ë§Œì•½ì— ë‹¤ë¥¸ ë¬¼ì²´ì™€ ì¶©ëŒí•˜ë©´
+    // 2. ì¶©ëŒí•œ ë¬¼ì²´ë¥¼ íŒŒê´´í•´ë²„ë¦°ë‹¤.
 
 
-    // 1. ¸¸¾à¿¡ ´Ù¸¥ ¹°Ã¼¿Í Ãæµ¹ÇÏ¸é
+    // 1. ë§Œì•½ì— ë‹¤ë¥¸ ë¬¼ì²´ì™€ ì¶©ëŒí•˜ë©´
     private void OnTriggerEnter2D(Collider2D otherCollider)
-    {       
-        // 2. Ãæµ¹ÇÑ ¹°Ã¼¸¦ ÆÄ±«ÇØ¹ö¸°´Ù.
-        Destroy(otherCollider.gameObject);
+    {
+        if (otherCollider.tag == "Bullet")
+        {
+            otherCollider.gameObject.SetActive(false);
+        }
+        else
+        {
+            // 2. ì¶©ëŒí•œ ë¬¼ì²´ë¥¼ íŒŒê´´í•´ë²„ë¦°ë‹¤.
+            Destroy(otherCollider.gameObject);
+        }    
     }
 }

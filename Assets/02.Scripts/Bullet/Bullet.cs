@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum BulletType  // ÃÑ¾Ë Å¸ÀÔ¿¡ ´ëÇÑ ¿­°ÅÇü(»ó¼ö¸¦ ±â¾ïÇÏ±â ÁÁ°Ô ÇÏ³ªÀÇ ÀÌ¸§À¸·Î ±×·ìÈ­ÇÏ´Â °Í)
+public enum BulletType  // ì´ì•Œ íƒ€ì…ì— ëŒ€í•œ ì—´ê±°í˜•(ìƒìˆ˜ë¥¼ ê¸°ì–µí•˜ê¸° ì¢‹ê²Œ í•˜ë‚˜ì˜ ì´ë¦„ìœ¼ë¡œ ê·¸ë£¹í™”í•˜ëŠ” ê²ƒ)
 {
     Main = 0,
     Sub = 1,
@@ -13,16 +13,16 @@ public enum BulletType  // ÃÑ¾Ë Å¸ÀÔ¿¡ ´ëÇÑ ¿­°ÅÇü(»ó¼ö¸¦ ±â¾ïÇÏ±â ÁÁ°Ô ÇÏ³ªÀÇ À
 
 public class Bullet : MonoBehaviour
 {
-    // public int BType = 0; // 0 : ÁÖÃÑ¾Ë, 1 : º¸Á¶ÃÑ¾Ë, 2 : ÆêÀÌ ½î´Â ÃÑ¾Ë
+    // public int BType = 0; // 0 : ì£¼ì´ì•Œ, 1 : ë³´ì¡°ì´ì•Œ, 2 : í«ì´ ì˜ëŠ” ì´ì•Œ
     public BulletType BType = BulletType.Main;
 
-    // [ÃÑ¾Ë ÀÌµ¿ ±¸Çö]
-    // ¸ñÇ¥: ÃÑ¾ËÀÌ À§·Î °è¼Ó ÀÌµ¿ÇÏ°í ½Í´Ù.
-    // ¼Ó¼º:
-    // - ¼Ó·Â
-    // ±¸Çö ¼ø¼­
-    // 1. ÀÌµ¿ÇÒ ¹æÇâÀ» ±¸ÇÑ´Ù.
-    // 2. ÀÌµ¿ÇÑ´Ù.
+    // [ì´ì•Œ ì´ë™ êµ¬í˜„]
+    // ëª©í‘œ: ì´ì•Œì´ ìœ„ë¡œ ê³„ì† ì´ë™í•˜ê³  ì‹¶ë‹¤.
+    // ì†ì„±:
+    // - ì†ë ¥
+    // êµ¬í˜„ ìˆœì„œ
+    // 1. ì´ë™í•  ë°©í–¥ì„ êµ¬í•œë‹¤.
+    // 2. ì´ë™í•œë‹¤.
 
     public float Speed = 5f;
     private GameObject _target;
@@ -43,14 +43,14 @@ public class Bullet : MonoBehaviour
         
         else if (BType == BulletType.Sub)
         {
-            // 1. ÀÌµ¿ÇÒ ¹æÇâÀ» ±¸ÇÑ´Ù.
-            // ¸¸¾à Å¸°ÙÀÌ ¾ø´Ù¸é
-            if (_target == null || _target.activeInHierarchy == false) // Å¸°ÙÀÌ ¾ø°Å³ª È÷¾î¶óÅ°°¡ ¾øÀ¸¸é
+            // 1. ì´ë™í•  ë°©í–¥ì„ êµ¬í•œë‹¤.
+            // ë§Œì•½ íƒ€ê²Ÿì´ ì—†ë‹¤ë©´
+            if (_target == null || _target.activeInHierarchy == false) // íƒ€ê²Ÿì´ ì—†ê±°ë‚˜ íˆì–´ë¼í‚¤ê°€ ì—†ìœ¼ë©´
             {
                 _target = GameObject.FindGameObjectWithTag("Enemy");
             }
 
-            // Ã£¾Ò´Âµ¥µµ ¾ø´Ù¸é À§ÂÊ¹æÇâ
+            // ì°¾ì•˜ëŠ”ë°ë„ ì—†ë‹¤ë©´ ìœ„ìª½ë°©í–¥
             if (_target == null)
             {
                 transform.position += (Vector3)(Vector2.up * Speed) * Time.deltaTime;
