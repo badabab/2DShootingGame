@@ -52,7 +52,8 @@ public class Player : MonoBehaviour
 
         if (_health <= 0 ) 
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

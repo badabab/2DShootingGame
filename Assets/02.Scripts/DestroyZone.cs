@@ -13,7 +13,7 @@ public class DestroyZone : MonoBehaviour
     // 1. 만약에 다른 물체와 충돌하면
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        if (otherCollider.CompareTag ("Bullet"))
+        if (otherCollider.CompareTag ("Bullet") || otherCollider.CompareTag("Enemy"))
         {
             otherCollider.gameObject.SetActive(false);
         }

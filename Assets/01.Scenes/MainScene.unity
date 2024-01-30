@@ -2798,10 +2798,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 3679855441914740116, guid: 4ba6924619b4a8c4b9bc8ea25d3fa0a8, type: 3}
+  SubBulletPrefab: {fileID: 6410313830859801267, guid: 8e5275d555592e245ad1770c64650104, type: 3}
+  PoolSize: 20
   MuzzlesList:
   - {fileID: 7451521671279734414}
   - {fileID: 335690199091617116}
-  SubBulletPrefab: {fileID: 6410313830859801267, guid: 8e5275d555592e245ad1770c64650104, type: 3}
   SubMuzzlesList:
   - {fileID: 6970392620933906610}
   - {fileID: 6485785866684945199}
@@ -2810,7 +2811,7 @@ MonoBehaviour:
   FireSource: {fileID: 9006636492317442891}
   BoomPrefab: {fileID: 4287754700258784794, guid: b5fba673b53c4a341b66ca3c842a4a9d, type: 3}
   Boom_Timer: 0
-  Boom_Cool_Time: 5
+  Boom_Cool_Time: 8
 --- !u!212 &8144945855660792230
 SpriteRenderer:
   m_ObjectHideFlags: 0

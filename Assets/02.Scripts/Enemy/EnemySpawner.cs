@@ -6,74 +6,143 @@ using UnityEngine.UIElements;
 
 public class EnemySpawner : MonoBehaviour
 {
-    // ¿ªÇÒ: ÀÏÁ¤½Ã°£¸¶´Ù ÀûÀ» ÇÁ¸®ÆÕÀ¸·ÎºÎÅÍ »ı¼ºÇØ¼­ ³» À§Ä¡¿¡ °®´Ù ³õ°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º:
-    // - Àû ÇÁ¸®ÆÕ
-    // - ÀÏÁ¤½Ã°£
-    // - ÇöÀç½Ã°£
-    // ±¸Çö ¼ø¼­:
-    // 1. ½Ã°£ÀÌ Èå¸£´Ù°¡
-    // 2. ¸¸¾à¿¡ ½Ã°£ÀÌ ÀÏÁ¤½Ã°£(1ÃÊ)ÀÌ µÇ¸é
-    // 3. ÇÁ¸®ÆÕÀ¸·ÎºÎÅÍ ÀûÀ» »ı¼ºÇÑ´Ù.
-    // 4. »ı¼ºÇÑ ÀûÀÇ À§Ä¡¸¦ ³» À§Ä¡·Î ¹Ù²Û´Ù.
+    // ì—­í• : ì¼ì •ì‹œê°„ë§ˆë‹¤ ì ì„ í”„ë¦¬íŒ¹ìœ¼ë¡œë¶€í„° ìƒì„±í•´ì„œ ë‚´ ìœ„ì¹˜ì— ê°–ë‹¤ ë†“ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±:
+    // - ì  í”„ë¦¬íŒ¹
+    // - ì¼ì •ì‹œê°„
+    // - í˜„ì¬ì‹œê°„
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ì‹œê°„ì´ íë¥´ë‹¤ê°€
+    // 2. ë§Œì•½ì— ì‹œê°„ì´ ì¼ì •ì‹œê°„(1ì´ˆ)ì´ ë˜ë©´
+    // 3. í”„ë¦¬íŒ¹ìœ¼ë¡œë¶€í„° ì ì„ ìƒì„±í•œë‹¤.
+    // 4. ìƒì„±í•œ ì ì˜ ìœ„ì¹˜ë¥¼ ë‚´ ìœ„ì¹˜ë¡œ ë°”ê¾¼ë‹¤.
 
-    [Header("Àû ÇÁ¸®ÆÕ")]
+    [Header("ì  í”„ë¦¬íŒ¹")]
     public GameObject EnemyPrefab;          // Basic
     public GameObject EnemyPrefabTarget;    // Target
     public GameObject EnemyPrefabFollow;    // Follow
     public GameObject EnemyPrefabHorizon;   // Horizon
 
-    [Header("Å¸ÀÌ¸Ó")]
+    [Header("íƒ€ì´ë¨¸")]
     public float Timer = 0f;
     public float Spawn_Time = 1f;
 
-    // ¸ñÇ¥: Àû »ı¼º ½Ã°£À» ·£´ıÇÏ°Ô ÇÏ°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º:
-    // - ÃÖ¼Ò ½Ã°£
-    // - ÃÖ´ë ½Ã°£
-    [Header("Àû »ı¼º ½Ã°£")]
+    // ëª©í‘œ: ì  ìƒì„± ì‹œê°„ì„ ëœë¤í•˜ê²Œ í•˜ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±:
+    // - ìµœì†Œ ì‹œê°„
+    // - ìµœëŒ€ ì‹œê°„
+    [Header("ì  ìƒì„± ì‹œê°„")]
     public float MinTime = 0.5f;
     public float MaxTime = 1.5f;
 
+    public int PoolSize = 5;
+    private List<Enemy> _enemyPool;
+
+    private void Awake()
+    {
+        _enemyPool = new List<Enemy>();
+
+        for (int i = 0; i < PoolSize; i++)
+        {
+            GameObject enemyObject = Instantiate(EnemyPrefab);
+            enemyObject.SetActive(false);
+            _enemyPool.Add(enemyObject.GetComponent<Enemy>());
+        }
+        for (int i = 0; i < PoolSize; i++)
+        {
+            GameObject enemyObject = Instantiate(EnemyPrefabTarget);
+            enemyObject.SetActive(false);
+            _enemyPool.Add(enemyObject.GetComponent<Enemy>());
+        }
+        for (int i = 0; i < PoolSize; i++)
+        {
+            GameObject enemyObject = Instantiate(EnemyPrefabFollow);
+            enemyObject.SetActive(false);
+            _enemyPool.Add(enemyObject.GetComponent<Enemy>());
+        }
+        for (int i = 0; i < PoolSize; i++)
+        {
+            GameObject enemyObject = Instantiate(EnemyPrefabHorizon);
+            enemyObject.SetActive(false);
+            _enemyPool.Add(enemyObject.GetComponent<Enemy>());
+        }
+    }
+
     private void Start()
     {
-        // ½ÃÀÛÇÒ ¶§ Àû »ı¼º ½Ã°£À» ·£´ıÀ¸·Î ¼³Á¤ÇÑ´Ù.
+        // ì‹œì‘í•  ë•Œ ì  ìƒì„± ì‹œê°„ì„ ëœë¤ìœ¼ë¡œ ì„¤ì •í•œë‹¤.
         Spawn_Time = Random.Range(MinTime, MaxTime);
     }
 
     void Update()
     {
-        int probability = Random.Range(0, 10); // 0 ~ 9 »çÀÌ ·£´ı¼ıÀÚ ÇÏ³ª
+        int probability = Random.Range(0, 10); // 0 ~ 9 ì‚¬ì´ ëœë¤ìˆ«ì í•˜ë‚˜
         Timer += Time.deltaTime;
         if (Timer >= Spawn_Time)
         {
-            GameObject enemy = null;
+            Enemy enemy = null;
                        
             if (probability < 1)
             {
-                enemy = Instantiate(EnemyPrefabFollow);
+                //enemy = Instantiate(EnemyPrefabFollow);
+                foreach (Enemy e in _enemyPool)
+                {
+                    if (e.gameObject.activeInHierarchy == false && e.EType == EnemyType.Follow)
+                    {
+                        enemy = e;
+                        break;
+                    }
+                }
                 enemy.transform.position = this.transform.position;
+                enemy.gameObject.SetActive(true);
             }
             else if (probability < 3)
             {
-                enemy = Instantiate(EnemyPrefabHorizon);
+                //enemy = Instantiate(EnemyPrefabHorizon);
+                foreach (Enemy e in _enemyPool)
+                {
+                    if (e.gameObject.activeInHierarchy == false && e.EType == EnemyType.Horizon)
+                    {
+                        enemy = e;
+                        break;
+                    }
+                }
                 enemy.transform.position = new Vector2(-4, 3);
+                enemy.gameObject.SetActive(true);
             }
             else if (probability < 5)
             {         
-                enemy = Instantiate(EnemyPrefabTarget);
+                //enemy = Instantiate(EnemyPrefabTarget);
+                foreach (Enemy e in _enemyPool)
+                {
+                    if (e.gameObject.activeInHierarchy == false && e.EType == EnemyType.Target)
+                    {
+                        enemy = e;
+                        break;
+                    }
+                }
                 enemy.transform.position = this.transform.position;
+                enemy.gameObject.SetActive(true);
             }
             else
             {
-                enemy = Instantiate(EnemyPrefab);
+                //enemy = Instantiate(EnemyPrefab);
+                foreach (Enemy e in _enemyPool)
+                {
+                    if (e.gameObject.activeInHierarchy == false && e.EType == EnemyType.Basic)
+                    {
+                        enemy = e;
+                        break;
+                    }
+                }
                 enemy.transform.position = this.transform.position;
+                enemy.gameObject.SetActive(true);
             } 
                        
             // GameObject enemy = Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
                         
-            Timer = 0f; // Å¸ÀÌ¸Ó ÃÊ±âÈ­
-            Spawn_Time = Random.Range(MinTime, MaxTime); // Àû »ı¼º½Ã°£ ·£´ı
+            Timer = 0f; // íƒ€ì´ë¨¸ ì´ˆê¸°í™”
+            Spawn_Time = Random.Range(MinTime, MaxTime); // ì  ìƒì„±ì‹œê°„ ëœë¤
         }      
     }
 }
