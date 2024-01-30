@@ -33,7 +33,7 @@ public class Boom : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         Enemy enemy = otherCollider.GetComponent<Enemy>();
-        if (otherCollider.tag == "Enemy")
+        if (otherCollider.CompareTag ("Enemy"))
         {
             enemy.Death();
             enemy.MakeItem();

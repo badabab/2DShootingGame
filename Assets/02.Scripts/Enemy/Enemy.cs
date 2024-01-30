@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
         // 충돌한 게임 오브젝트의 태그를 확인
         // Debug.Log(collision.collider.tag);  // Player or Bullet
 
-        if (collision.collider.tag == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
             Player player = collision.collider.GetComponent<Player>();
             player.DecreaseHealth(1);
@@ -133,7 +133,7 @@ public class Enemy : MonoBehaviour
             }
             */
         }
-        else if (collision.collider.tag == "Bullet")
+        else if (collision.collider.CompareTag("Bullet"))
         {
             Bullet bullet = collision.collider.GetComponent<Bullet>();
             /*
@@ -215,20 +215,24 @@ public class Enemy : MonoBehaviour
 
     public void MakeItem()
     {
-        // 목표: 50% 확률로 체력 올려주는 아이템, 50% 확률로 이동속도 올려주는 아이템
-        //Item item = collision.collider.GetComponent<Item>();
-        GameObject item = null;
-        if (Random.Range(0, 2) == 0)
+        // 20%확률로 아이템 생성
+        if (Random.Range(0,5) == 0)
         {
-            // 체력 올려주는 아이템 생성
-            item = Instantiate(HealthItemPrefab);
+            // 목표: 50% 확률로 체력 올려주는 아이템, 50% 확률로 이동속도 올려주는 아이템
+            //Item item = collision.collider.GetComponent<Item>();
+            GameObject item = null;
+            if (Random.Range(0, 2) == 0)
+            {
+                // 체력 올려주는 아이템 생성
+                item = Instantiate(HealthItemPrefab);
+            }
+            else
+            {
+                // 이동속도 올려주는 아이템 생성
+                item = Instantiate(SpeedItemPrefab);
+            }
+            // 위치를 나(Enemy)의 위치로 수정
+            item.transform.position = this.transform.position;
         }
-        else
-        {
-            // 이동속도 올려주는 아이템 생성
-            item = Instantiate(SpeedItemPrefab);
-        }
-        // 위치를 나(Enemy)의 위치로 수정
-        item.transform.position = this.transform.position;
     }
 }

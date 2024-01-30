@@ -36,6 +36,10 @@ public class Player : MonoBehaviour
     */
     public void AddHealth(int healthAmount)
     {
+        if (_health > 9)
+        {
+            return;
+        }
         _health += healthAmount;
     }
     public void DecreaseHealth(int healthAmount)

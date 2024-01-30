@@ -26,6 +26,12 @@ public class Item : MonoBehaviour
     public GameObject SpeedItemVFXPrefab;
 
 
+    private void Awake()
+    {
+        MyAnimator = GetComponent<Animator>();
+        MyAnimator.SetInteger("ItemType", (int)IType);
+    }
+
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //Debug.Log("트리거 시작!");
@@ -41,27 +47,21 @@ public class Item : MonoBehaviour
                 Player player = otherCollider.GetComponent<Player>();
                 player.AddHealth(1);
                 Debug.Log($"Player Health: {player.GetHealth()}");
-
+                
                 GameObject vfx = Instantiate(HealthItemVFXPrefab);
-                vfx.transform.position = this.transform.position;
+                vfx.transform.position = this.transform.position;                
             }
             else if (IType == ItemType.Speed)
             {
                 PlayerMove player = otherCollider.GetComponent<PlayerMove>();
                 player.AddSpeed(1);
                 Debug.Log($"Player Speed: {player.GetSpeed()}");
-
+                
                 GameObject vfx = Instantiate(SpeedItemVFXPrefab);
-                vfx.transform.position = this.transform.position;
+                vfx.transform.position = this.transform.position;                               
             }
-            Destroy(this.gameObject);       
+            Destroy(this.gameObject);
         }       
-    }
-
-    private void Awake()
-    {
-        MyAnimator = GetComponent<Animator>();
-        MyAnimator.SetInteger("ItemType", (int)IType);
     }
 
     private void Start()
@@ -76,10 +76,8 @@ public class Item : MonoBehaviour
             Vector2 dir = _target.transform.position - this.transform.position;
             dir.Normalize();
             transform.position += (Vector3)(dir * Speed) * Time.deltaTime;
-        }
-        
-    }
-   
+        }       
+    }  
 
     private void OnTriggerExit2D(Collider2D otherCollider)
     {

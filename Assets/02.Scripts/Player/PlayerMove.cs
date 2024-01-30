@@ -163,6 +163,10 @@ public class PlayerMove : MonoBehaviour
     
     public void AddSpeed(float speedAmount)
     {
+        if (_speed > 9)
+        {
+            return;
+        }
         _speed += speedAmount;
     }
 }
