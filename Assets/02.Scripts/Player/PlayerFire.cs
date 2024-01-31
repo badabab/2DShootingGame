@@ -77,35 +77,42 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
+        // 전처리 단계: 코드가 컴파일(해석) 되기 전에 미리 처리되는 단계
+        // 전처리문 코드를 이용해서 미리 처리되는 코드를 작성할 수 있다.
+        // C#의 모든 전처리 코드는 '#'으로 시작한다. (#if, #elif, #endif)
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        GameObject.Find("Joystick canvas XYBZ").SetActive(false);
+#endif
+
+#if UNITY_ANDROID
+        Debug.Log("안드로이드 입니다.");
+#endif
+
+
+
         Timer = 0f; // 처음 시작할 때는 타이머 0초
         AutoMode = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && AutoMode == false)
         {
-            Debug.Log("자동 공격 모드");
-            AutoMode = true;
+            AutoModeControl();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && AutoMode == true)
         {
-            Debug.Log("수동 공격 모드");
-            AutoMode = false;
+            AutoModeControl();
         }
 
         Boom_Timer -= Time.deltaTime;
-        
-        if (Boom_Timer <= 0 && Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("Boom");
-            // 붐 타이머 시간을 다시 쿨타임으로
-            Boom_Timer = Boom_Cool_Time;
 
-            // 붐 프리팹을 씬으로 생성한다.
-            GameObject boom = Instantiate(BoomPrefab);
-            boom.transform.position = new Vector2 (0, 1.6f);         
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Boom();
         }
+        
               
         // 타이머 계산
         Timer -= Time.deltaTime;
@@ -114,62 +121,104 @@ public class PlayerFire : MonoBehaviour
         bool ready = AutoMode || Input.GetKeyDown(KeyCode.Space);
         if (Timer <= 0 && ready)
         {
-            FireSource.Play();
-              // 타이머 초기화
-              Timer = Cool_Time;
-              
-              /*
-              // 목표 : 총구 개수 만큼 총알을 만들고, 만든 총알의 위치를 각 총구의 위치로 바꾼다.
-              for (int i = 0; i < MuzzlesList.Count; i++)
-              {
-                    // 2. 프리팹으로부터 총알을 만든다.
-                    GameObject bullet = Instantiate(BulletPrefab);
-                    GameObject subBullet = Instantiate(SubBulletPrefab);
-
-                    // 3. 만든 총알의 위치를 총구의 위치로 바꾼다.
-                    bullet.transform.position = MuzzlesList[i].transform.position;
-                    subBullet.transform.position = SubMuzzlesList[i].transform.position;
-              }
-              */
-              
-
-            // 목표: 총구 개수 만큼 총알을 풀에서 꺼내쓴다.
-            // 순서:
-            for (int i = 0; i < MuzzlesList.Count; i++)
-            {
-                // 1. 꺼져 있는 총알을 찾아 꺼낸다.
-                Bullet bullet = null;
-                foreach(Bullet b in _bulletPool)
-                {
-                    // 만약에 꺼져있고 && 메인총알이라면
-                    if (b.gameObject.activeInHierarchy == false && b.BType == BulletType.Main)
-                    {
-                        bullet = b;
-                        break;  // 찾았기 때문에 그 뒤까지 찾을 필요가 없다.
-                    }
-                }
-
-                // 2. 꺼낸 총알의 위치를 각 총구의 위치로 바꾼다.
-                bullet.transform.position = MuzzlesList[i].transform.position;
-
-                // 3. 총알을 킨다.(발사한다.)
-                bullet.gameObject.SetActive(true);
-            }
-
-            for (int i = 0;i < SubMuzzlesList.Count; i++)
-            {
-                Bullet subBullet = null;
-                foreach (Bullet b in _bulletPool)
-                {
-                    if(b.gameObject.activeInHierarchy == false && b.BType == BulletType.Sub)
-                    {
-                        subBullet = b;
-                        break;
-                    }
-                }
-                subBullet.transform.position = SubMuzzlesList[i].transform.position;
-                subBullet.gameObject.SetActive(true);
-            }
+            BulletFire();         
         } 
+    }
+
+    private void Boom()
+    {  
+        if (Boom_Timer <= 0)
+        {
+            Debug.Log("Boom");
+            // 붐 타이머 시간을 다시 쿨타임으로
+            Boom_Timer = Boom_Cool_Time;
+
+            // 붐 프리팹을 씬으로 생성한다.
+            GameObject boom = Instantiate(BoomPrefab);
+            boom.transform.position = new Vector2(0, 1.6f);
+        }
+    }
+
+    private void AutoModeControl()
+    {
+        if (AutoMode == true)
+        {
+            AutoMode = false;
+            Debug.Log("수동 공격 모드");
+        }
+        else if (AutoMode == false)
+        {
+            AutoMode = true;
+            Debug.Log("자동 공격 모드");
+        }
+    }
+
+    private void BulletFire()
+    {
+        FireSource.Play();
+        // 타이머 초기화
+        Timer = Cool_Time;
+
+        // 목표: 총구 개수 만큼 총알을 풀에서 꺼내쓴다.
+        // 순서:
+        for (int i = 0; i < MuzzlesList.Count; i++)
+        {
+            // 1. 꺼져 있는 총알을 찾아 꺼낸다.
+            Bullet bullet = null;
+            foreach (Bullet b in _bulletPool)
+            {
+                // 만약에 꺼져있고 && 메인총알이라면
+                if (b.gameObject.activeInHierarchy == false && b.BType == BulletType.Main)
+                {
+                    bullet = b;
+                    break;  // 찾았기 때문에 그 뒤까지 찾을 필요가 없다.
+                }
+            }
+
+            // 2. 꺼낸 총알의 위치를 각 총구의 위치로 바꾼다.
+            bullet.transform.position = MuzzlesList[i].transform.position;
+
+            // 3. 총알을 킨다.(발사한다.)
+            bullet.gameObject.SetActive(true);
+        }
+
+        for (int i = 0; i < SubMuzzlesList.Count; i++)
+        {
+            Bullet subBullet = null;
+            foreach (Bullet b in _bulletPool)
+            {
+                if (b.gameObject.activeInHierarchy == false && b.BType == BulletType.Sub)
+                {
+                    subBullet = b;
+                    break;
+                }
+            }
+            subBullet.transform.position = SubMuzzlesList[i].transform.position;
+            subBullet.gameObject.SetActive(true);
+        }
+    }
+
+    // 총알 발사
+    public void OnClickXButton()
+    {
+        Debug.Log("X버튼이 클릭되었습니다.");
+        if (Timer <= 0)
+        {
+            BulletFire();
+        }      
+    }
+
+    // 자동 공격 on/off
+    public void OnClickYButton()
+    {
+        Debug.Log("Y버튼이 클릭되었습니다.");
+        AutoModeControl();
+    }
+
+    // 궁극기 사용
+    public void OnClickBButton()
+    {
+        Debug.Log("B버튼이 클릭되었습니다.");
+        Boom();
     }
 }
